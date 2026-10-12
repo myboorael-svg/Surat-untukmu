@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sebuah Surat Untukmu ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;color:#fff1f5;
+  font-family:Georgia,serif;text-align:center;
+  background:radial-gradient(ellipse at top,#49235f,#17152f 65%,#080b1b);
+  overflow-x:hidden
+}
+main{position:relative;z-index:2;padding:55px 22px 40px;max-width:600px;margin:auto}
+h1{color:#ffc4dd;font-size:32px;line-height:1.35}
+p{font-size:17px;line-height:1.9}
+button{
+  border:1px solid #ffbad7;border-radius:30px;
+  padding:13px 21px;margin:8px;
+  background:#e95b96;color:white;font-size:15px;
+  cursor:pointer
+}
+button:active{transform:scale(.97)}
+.card{
+  margin-top:25px;padding:24px 18px;
+  background:#ffffff10;border:1px solid #ffffff30;
+  border-radius:22px;box-shadow:0 0 30px #ed70a322
+}
+.hidden{display:none}
+#poem{white-space:pre-line;color:#ffe1eb}
+.heart{
+  position:fixed;bottom:-30px;z-index:1;
+  color:#ff91bd;animation:floatUp linear forwards;
+  pointer-events:none
+}
+@keyframes floatUp{
+  to{transform:translateY(-110vh) rotate(35deg);opacity:0}
+}
+.small{font-size:13px;color:#d8c9e4}
+</style>
+</head>
+<body>
+<main>
+  <div style="font-size:42px">🌙 ✨ 💗</div>
+  <p class="small">ADA SESUATU YANG INGIN KUSAMPAIKAN...</p>
+  <h1>Sebuah Surat<br>Untuk Seseorang</h1>
+  <p>Ada pesan kecil yang sudah lama ingin kusampaikan kepadamu.</p>
+
+  <button id="openBtn" onclick="openLetter()">
+    Buka surat rahasia 💌
+  </button>
+
+  <section id="letter" class="card hidden">
+    <p>Untuk kamu, yang diam-diam membuat hari-hariku berbeda...</p>
+    <div id="poem"></div>
+    <p style="color:#ffb8d5">♡ ♡ ♡</p>
+    <button onclick="musicToggle()" id="musicBtn">
+      ♫ Nyalakan musik
+    </button>
+    <div style="height:15px"></div>
+    <button onclick="showQuestion()">Ada satu hal lagi...</button>
+  </section>
+
+  <section id="question" class="card hidden">
+    <div style="font-size:45px">💖</div>
+    <h1>Maukah kamu...</h1>
+    <p>Menjadi seseorang yang bersamaku, berbagi cerita, tawa, dan rasa?</p>
+    <h2 style="color:#ffc4dd">Maukah kamu menjadi pacarku? ❤️</h2>
+    <button onclick="answerYes()">Iya, aku mau ❤️</button>
+    <button onclick="answerTalk()">Aku ingin bicara dulu 💌</button>
+    <p id="answer"></p>
+  </section>
+  <p class="small">Dibuat dengan tulus, untuk seseorang yang istimewa.</p>
+</main>
+
+<script>
+const poemText =
+"Jika malam punya bintang untuk dijaga,\\n"+
+"dan langit punya bulan untuk ditemani,\\n"+
+"izinkan aku menyimpan satu harapan sederhana:\\n"+
+"semoga suatu hari kamu berjalan di sampingku.\\n\\n"+
+"Aku tak menjanjikan kisah tanpa luka,\\n"+
+"atau hari yang selalu sempurna.\\n"+
+"Tapi aku ingin belajar memahamimu,\\n"+
+"menjagamu dengan tulus, dan tumbuh bersama.\\n\\n"+
+"Karena di antara banyaknya cerita di dunia,\\n"+
+"ada satu cerita yang ingin kutulis bersamamu. ❤️";
+
+let opened=false,playing=false,ctx=null,timer=null;
+
+function openLetter(){
+  document.getElementById("letter").classList.remove("hidden");
+  document.getElementById("openBtn").classList.add("hidden");
+  if(!opened){
+    opened=true;
+    let i=0;
+    const target=document.getElementById("poem");
+    timer=setInterval(()=>{
+      target.textContent=poemText.slice(0,i++);
+      if(i>poemText.length)clearInterval(timer);
+    },48);
+  }
+}
+function showQuestion(){
+  document.getElementById("question").classList.remove("hidden");
+  document.getElementById("question").scrollIntoView({behavior:"smooth"});
+}
+function answerYes(){
+  document.getElementById("answer").textContent=
+  "Kamu baru saja membuat hari ini terasa lebih indah. ❤️";
+  burst();
+}
+function answerTalk(){
+  document.getElementById("answer").textContent=
+  "Tentu. Aku ingin mendengar isi hatimu juga. Kita bicarakan dengan nyaman, ya. 💗";
+}
+function burst(){
+  for(let i=0;i<24;i++){
+    setTimeout(()=>{
+      const h=document.createElement("span");
+      h.className="heart";h.textContent=["💗","💕","❤️","✨"][i%4];
+      h.style.left=Math.random()*100+"vw";
+      h.style.animationDuration=(3+Math.random()*3)+"s";
+      h.style.fontSize=(16+Math.random()*22)+"px";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),6500);
+    },i*90);
+  }
+}
+function musicToggle(){
+  if(playing){
+    if(ctx)ctx.suspend();
+    playing=false;
+    document.getElementById("musicBtn").textContent="♫ Nyalakan musik";
+    return;
+  }
+  const AudioContext=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContext){
+    alert("Browser ini belum mendukung musik. Coba gunakan Chrome.");
+    return;
+  }
+  if(!ctx)ctx=new AudioContext();
+  ctx.resume();
+  playing=true;
+  document.getElementById("musicBtn").textContent="♫ Matikan musik";
+  const notes=[261.63,329.63,392,329.63,293.66,349.23,392,349.23];
+  let n=0;
+  function playNote(){
+    if(!playing)return;
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type="sine";
+    osc.frequency.value=notes[n%notes.length];
+    gain.gain.setValueAtTime(0.0001,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.055,ctx.currentTime+0.15);
+    gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+1.1);
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.start();osc.stop(ctx.currentTime+1.15);
+    n++;setTimeout(playNote,700);
+  }
+  playNote();
+}
+setInterval(()=>{
+  const h=document.createElement("span");
+  h.className="heart";h.textContent=Math.random()>.5?"♡":"♥";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(7+Math.random()*6)+"s";
+  h.style.fontSize=(15+Math.random()*20)+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),14000);
+},700);
+</script>
+</body>
+</html>
