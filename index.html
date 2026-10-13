@@ -76,7 +76,7 @@ button:active{transform:scale(.97)}
     <p id="answer"></p>
   </section>
 
-  <section id="successPage" class="card hidden" style="background-image: linear-gradient(rgba(15, 12, 30, 0.8), rgba(15, 12, 30, 0.8)), url('https://stockcake.com'); background-size: cover; background-position: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #ffbad7; padding: 20px;">
+  <section id="successPage" class="card hidden" style="background-image: linear-gradient(rgba(15, 12, 30, 0.85), rgba(15, 12, 30, 0.85)), url('https://stockcake.com'); background-size: cover; background-position: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #ff91bd; padding: 20px; margin-top: 25px;">
     <h2 style="color: #ffc4dd; text-shadow: 0 2px 8px rgba(0,0,0,0.9); line-height: 1.5; font-size: 24px; margin: 15px 0;">
       makasih seng, cepetan dia udah nunggu kamu sambil senyum salting ⬇️
     </h2>
@@ -131,19 +131,6 @@ function answerYes(){
   const successPage = document.getElementById("successPage");
   successPage.classList.remove("hidden");
   successPage.scrollIntoView({ behavior: "smooth" });
-  
-  for(let i=0; i<60; i++) {
-    setTimeout(() => {
-      const h = document.createElement("span");
-      h.className = "heart";
-      h.textContent = ["❤️", "🎉", "💖", "✨", "💝", "🥳"][i % 6];
-      h.style.left = Math.random() * 100 + "vw";
-      h.style.animationDuration = (2 + Math.random() * 3) + "s";
-      h.style.fontSize = (20 + Math.random() * 30) + "px";
-      document.body.appendChild(h);
-      setTimeout(() => h.remove(), 5000);
-    }, i * 50);
-  }
 }
 
 function answerTalk(){
@@ -170,8 +157,8 @@ if (!window.myAudioElement) {
     window.myAudioElement.volume = 1.0;
 
     window.myAudioElement.addEventListener("timeupdate", function() {
-        const startTime = 175;
-        const endTime = 250;
+        const startTime = 45;
+        const endTime = 110;
 
         if (window.myAudioElement.currentTime < startTime && playing) {
             window.myAudioElement.currentTime = startTime;
