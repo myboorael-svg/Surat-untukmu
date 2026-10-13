@@ -202,16 +202,22 @@ function musicToggle(){
         if(btn) btn.textContent = "⏸ Matikan musik";
     }
 }
-
 setInterval(()=>{
   const h=document.createElement("span");
-  h.className="heart";h.textContent=Math.random()>.5?"♡":"♥";
+  h.className="heart";
+  const successVisible = !document.getElementById("successPage").classList.contains("hidden");
+  if(successVisible) {
+    h.textContent = ["❤️","🎉","💖","✨","💝","🥳"][Math.floor(Math.random()*6)];
+    h.style.fontSize=(20+Math.random()*25)+"px";
+  } else {
+    h.textContent=Math.random()>.5?"♡":"♥";
+    h.style.fontSize=(15+Math.random()*20)+"px";
+  }
   h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=(7+Math.random()*6)+"s";
-  h.style.fontSize=(15+Math.random()*20)+"px";
+  h.style.animationDuration=(5+Math.random()*5)+"s";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(),14000);
-},700);
+  setTimeout(()=>h.remove(),10000);
+}, 300);
 </script>
 </body>
 </html>
