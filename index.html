@@ -48,17 +48,17 @@ button:active{transform:scale(.97)}
   <h1>Sebuah Surat<br>Untuk Seseorang</h1>
   <p>Ada pesan kecil yang sudah lama ingin kusampaikan kepadamu.</p>
 
-  <button id="openBtn" onclick="openLetter()">
+    <button id="openBtn" onclick="openLetter(); musicToggle();">
     Buka surat rahasia 💌
   </button>
+
 
   <section id="letter" class="card hidden">
     <p>Untuk kamu, yang diam-diam membuat hari-hariku berbeda...</p>
     <div id="poem"></div>
     <p style="color:#ffb8d5">♡ ♡ ♡</p>
-    <button onclick="musicToggle()" id="musicBtn">
-      ♫ Nyalakan musik
-    </button>
+
+  </button>
     <div style="height:15px"></div>
     <button onclick="showQuestion()">Ada satu hal lagi...</button>
   </section>
@@ -98,6 +98,7 @@ function openLetter(){
   document.getElementById("openBtn").classList.add("hidden");
   if(!opened){
     opened=true;
+    playing=false; // <-- Tambahkan baris baru ini
     let i=0;
     const target=document.getElementById("poem");
     timer=setInterval(()=>{
@@ -106,6 +107,7 @@ function openLetter(){
     },48);
   }
 }
+
 function showQuestion(){
   document.getElementById("question").classList.remove("hidden");
   document.getElementById("question").scrollIntoView({behavior:"smooth"});
