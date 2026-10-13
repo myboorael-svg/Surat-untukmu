@@ -77,16 +77,19 @@ button:active{transform:scale(.97)}
 
 <script>
 const poemText =
-"Jika malam punya bintang untuk dijaga,\\n"+
-"dan langit punya bulan untuk ditemani,\\n"+
-"izinkan aku menyimpan satu harapan sederhana:\\n"+
-"semoga suatu hari kamu berjalan di sampingku.\\n\\n"+
-"Aku tak menjanjikan kisah tanpa luka,\\n"+
-"atau hari yang selalu sempurna.\\n"+
-"Tapi aku ingin belajar memahamimu,\\n"+
-"menjagamu dengan tulus, dan tumbuh bersama.\\n\\n"+
-"Karena di antara banyaknya cerita di dunia,\\n"+
-"ada satu cerita yang ingin kutulis bersamamu. ❤️";
+`Jika malam punya bintang untuk dijaga,
+dan langit punya bulan untuk ditemani,
+izinkan aku menyimpan satu harapan sederhana:
+semoga suatu hari kamu berjalan di sampingku.
+
+Aku tak menjanjikan kisah tanpa luka,
+atau hari yang selalu sempurna.
+Tapi aku ingin belajar memahamimu,
+menjagamu dengan tulus, dan tumbuh bersama.
+
+Karena di antara banyaknya cerita di dunia,
+ada satu cerita yang ingin kutulis bersamamu. ❤️`;
+
 
 let opened=false,playing=false,ctx=null,timer=null;
 
@@ -129,39 +132,43 @@ function burst(){
     },i*90);
   }
 }
-function musicToggle(){
-  if(playing){
-    if(ctx)ctx.suspend();
-    playing=false;
-    document.getElementById("musicBtn").textContent="♫ Nyalakan musik";
-    return;
-  }
-  const AudioContext=window.AudioContext||window.webkitAudioContext;
-  if(!AudioContext){
-    alert("Browser ini belum mendukung musik. Coba gunakan Chrome.");
-    return;
-  }
-  if(!ctx)ctx=new AudioContext();
-  ctx.resume();
-  playing=true;
-  document.getElementById("musicBtn").textContent="♫ Matikan musik";
-  const notes=[261.63,329.63,392,329.63,293.66,349.23,392,349.23];
-  let n=0;
-  function playNote(){
-    if(!playing)return;
-    const osc=ctx.createOscillator();
-    const gain=ctx.createGain();
-    osc.type="sine";
-    osc.frequency.value=notes[n%notes.length];
-    gain.gain.setValueAtTime(0.0001,ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.055,ctx.currentTime+0.15);
-    gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+1.1);
-    osc.connect(gain);gain.connect(ctx.destination);
-    osc.start();osc.stop(ctx.currentTime+1.15);
-    n++;setTimeout(playNote,700);
-  }
-  playNote();
+// Pengaturan Audio Khusus (Afgan - Bukan Cinta Biasa)
+if (!window.myAudioElement) {
+    // Tautan contoh mp3, nanti silakan ganti dengan tautan file mp3 Afgan milik Anda
+    window.myAudioElement = new Audio("https://soundhelix.com"); 
+    window.myAudioElement.volume = 1.0; // Volume maksimal (100%)
+
+    // Logika Kustom untuk Mengulang Hanya Pre-Chorus & Chorus
+    window.myAudioElement.addEventListener("timeupdate", function() {
+        const startTime = 45;  // Detik awal Pre-Chorus
+        const endTime = 110;  // Detik akhir Chorus pertama
+
+        // Jika lagu baru diputar pertama kali, langsung lompat ke Pre-Chorus
+        if (window.myAudioElement.currentTime < startTime && playing) {
+            window.myAudioElement.currentTime = startTime;
+        }
+        // Jika sudah melewati batas Chorus, potong dan balikkan ke Pre-Chorus lagi
+        if (window.myAudioElement.currentTime >= endTime) {
+            window.myAudioElement.currentTime = startTime;
+        }
+    });
 }
+
+function musicToggle(){
+    const audio = window.myAudioElement;
+    const btn = document.getElementById("musicBtn");
+    
+    if(playing){
+        audio.pause();
+        playing = false;
+        if(btn) btn.textContent = "🎵 Nyalakan musik";
+    } else {
+        audio.play().catch(err => console.log("Gagal memutar musik: ", err));
+        playing = true;
+        if(btn) btn.textContent = "⏸ Matikan musik";
+    }
+}
+
 setInterval(()=>{
   const h=document.createElement("span");
   h.className="heart";h.textContent=Math.random()>.5?"♡":"♥";
