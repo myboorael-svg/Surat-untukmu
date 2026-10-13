@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -55,7 +54,7 @@ button:active{transform:scale(.97)}
   <h1>Sebuah Surat<br>Untuk Seseorang</h1>
   <p>Ada pesan kecil yang sudah lama ingin kusampaikan kepadamu.</p>
 
-    <button id="openBtn" onclick="openLetter(); musicToggle();">
+  <button id="openBtn" onclick="openLetter(); musicToggle();">
     Buka surat rahasia 💌
   </button>
 
@@ -63,7 +62,6 @@ button:active{transform:scale(.97)}
     <p>Untuk kamu, yang diam-diam membuat hari-hariku berbeda...</p>
     <div id="poem"></div>
     <p style="color:#ffb8d5">♡ ♡ ♡</p>
-
     <div style="height:15px"></div>
     <button onclick="showQuestion()">Ada satu hal lagi...</button>
   </section>
@@ -76,7 +74,9 @@ button:active{transform:scale(.97)}
     <button onclick="answerYes()">Iya, aku mau ❤️</button>
     <button onclick="answerTalk()">Aku ingin bicara dulu 💌</button>
     <p id="answer"></p>
-    <section id="successPage" class="card hidden" style="background-image: linear-gradient(rgba(23, 21, 47, 0.8), rgba(23, 21, 47, 0.8)), url('https://unsplash.com'); background-size: cover; background-position: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #ff91bd; padding: 20px;">
+  </section>
+
+  <section id="successPage" class="card hidden" style="background-image: linear-gradient(rgba(15, 12, 30, 0.8), rgba(15, 12, 30, 0.8)), url('https://stockcake.com'); background-size: cover; background-position: center; min-height: 400px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px solid #ffbad7; padding: 20px;">
     <h2 style="color: #ffc4dd; text-shadow: 0 2px 8px rgba(0,0,0,0.9); line-height: 1.5; font-size: 24px; margin: 15px 0;">
       makasih seng, cepetan dia udah nunggu kamu sambil senyum salting ⬇️
     </h2>
@@ -84,6 +84,7 @@ button:active{transform:scale(.97)}
     <!-- Menu kosong sementara -->
     <div id="nextMenuPlaceholder"></div>
   </section>
+
   <p class="small">Dibuat dengan tulus, untuk seseorang yang istimewa.</p>
 </main>
 
@@ -101,7 +102,6 @@ menjagamu dengan tulus, dan tumbuh bersama.
 
 Karena di antara banyaknya cerita di dunia,
 ada satu cerita yang ingin kutulis bersamamu. ❤️`;
-
 
 let opened=false,playing=false,ctx=null,timer=null;
 
@@ -124,16 +124,14 @@ function showQuestion(){
   document.getElementById("question").classList.remove("hidden");
   document.getElementById("question").scrollIntoView({behavior:"smooth"});
 }
+
 function answerYes(){
-  // 1. Sembunyikan halaman pertanyaan (slide 2)
   document.getElementById("question").classList.add("hidden");
   
-  // 2. Munculkan halaman sukses (slide 3)
   const successPage = document.getElementById("successPage");
   successPage.classList.remove("hidden");
   successPage.scrollIntoView({ behavior: "smooth" });
   
-  // 3. Ledakkan banyak emoji di sekeliling layar (dimeriahkan)
   for(let i=0; i<60; i++) {
     setTimeout(() => {
       const h = document.createElement("span");
@@ -147,10 +145,12 @@ function answerYes(){
     }, i * 50);
   }
 }
+
 function answerTalk(){
   document.getElementById("answer").textContent=
   "Tentu. Aku ingin mendengar isi hatimu juga. Kita bicarakan dengan nyaman, ya. 💗";
 }
+
 function burst(){
   for(let i=0;i<24;i++){
     setTimeout(()=>{
@@ -164,22 +164,18 @@ function burst(){
     },i*90);
   }
 }
-// Pengaturan Audio Khusus (Afgan - Bukan Cinta Biasa)
-if (!window.myAudioElement) {
-    // Tautan contoh mp3, nanti silakan ganti dengan tautan file mp3 Afgan milik Anda
-    window.myAudioElement = new Audio("afgan.mp3")
-    window.myAudioElement.volume = 1.0; // Volume maksimal (100%)
 
-    // Logika Kustom untuk Mengulang Hanya Pre-Chorus & Chorus
+if (!window.myAudioElement) {
+    window.myAudioElement = new Audio("afgan.mp3");
+    window.myAudioElement.volume = 1.0;
+
     window.myAudioElement.addEventListener("timeupdate", function() {
         const startTime = 175;
         const endTime = 250;
 
-        // Jika lagu baru diputar pertama kali, langsung lompat ke Pre-Chorus
         if (window.myAudioElement.currentTime < startTime && playing) {
             window.myAudioElement.currentTime = startTime;
         }
-        // Jika sudah melewati batas Chorus, potong dan balikkan ke Pre-Chorus lagi
         if (window.myAudioElement.currentTime >= endTime) {
             window.myAudioElement.currentTime = startTime;
         }
@@ -188,22 +184,22 @@ if (!window.myAudioElement) {
 
 function musicToggle(){
     const audio = window.myAudioElement;
-    const btn = document.getElementById("musicBtn");
-    
     if(playing){
         audio.pause();
         playing = false;
-        if(btn) btn.textContent = "🎵 Nyalakan musik";
     } else {
         audio.play().catch(err => console.log("Gagal memutar musik: ", err));
         playing = true;
-        if(btn) btn.textContent = "⏸ Matikan musik";
     }
 }
+
 setInterval(()=>{
   const h=document.createElement("span");
   h.className="heart";
-  const successVisible = !document.getElementById("successPage").classList.contains("hidden");
+  
+  const successPage = document.getElementById("successPage");
+  const successVisible = successPage && !successPage.classList.contains("hidden");
+  
   if(successVisible) {
     h.textContent = ["❤️","🎉","💖","✨","💝","🥳"][Math.floor(Math.random()*6)];
     h.style.fontSize=(20+Math.random()*25)+"px";
