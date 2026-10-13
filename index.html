@@ -174,8 +174,8 @@ if (!window.myAudioElement) {
 
     // Logika Kustom untuk Mengulang Hanya Pre-Chorus & Chorus
     window.myAudioElement.addEventListener("timeupdate", function() {
-        const startTime = 45;  // Detik awal Pre-Chorus
-        const endTime = 110;  // Detik akhir Chorus pertama
+        const startTime = 175;
+        const endTime = 250;
 
         // Jika lagu baru diputar pertama kali, langsung lompat ke Pre-Chorus
         if (window.myAudioElement.currentTime < startTime && playing) {
